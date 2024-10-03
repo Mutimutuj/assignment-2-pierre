@@ -1,0 +1,102 @@
+SQL*Plus: Release 19.0.0.0.0 - Production on Thu Oct 3 12:11:32 2024
+Version 19.3.0.0.0
+
+Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+Enter user-name: sys as sysdba
+Enter password:
+
+Connected to:
+Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+Version 19.3.0.0.0
+ SQL>CREATE PLUGGABLE DATABASE plsql_class2024db
+  2  ADMIN USER an_plsqlauca IDENTIFIED BY Password123
+  3  FILE_NAME_CONVERT = (
+  4      'C:\APP\ORADATA\ORCL\PDBSEED\SYSTEM01.DBF',
+  5      'C:\oracle19c\oradata\ORCL2\orclpdb\plsql_class2024db\SYSTEM01.DBF',
+  6      'C:\APP\ORADATA\ORCL\PDBSEED\SYSAUX01.DBF',
+  7      'C:\oracle19c\oradata\ORCL2\orclpdb\plsql_class2024db\SYSAUX01.DBF',
+  8      'C:\APP\ORADATA\ORCL\PDBSEED\UNDOTBS01.DBF',
+  9      'C:\oracle19c\oradata\ORCL2\orclpdb\plsql_class2024db\UNDOTBS01.DBF',
+ 10      'C:\APP\ORADATA\ORCL\PDBSEED\TEMP',
+ 11      'C:\oracle19c\oradata\ORCL2\orclpdb\plsql_class2024db\TEMP'
+ 12  );
+Pluggable database created.
+SQL> show pdbs;
+
+    CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 PDB$SEED                       READ ONLY  NO
+         3 ORCLPDB                        MOUNTED
+         5 PLSQL_CLASS2024DB              MOUNTED
+SQL> CREATE PLUGGABLE DATABASE an_to_delete_pdb
+  2  ADMIN USER an_plsqlauca IDENTIFIED BY Password123
+  3  FILE_NAME_CONVERT = (
+  4      'C:\APP\ORADATA\ORCL\PDBSEED\SYSTEM01.DBF',
+  5      'C:\oracle19c\oradata\ORCL2\orclpdb\an_to_delete_pdb\SYSTEM01.DBF',
+  6      'C:\APP\ORADATA\ORCL\PDBSEED\SYSAUX01.DBF',
+  7      'C:\oracle19c\oradata\ORCL2\orclpdb\an_to_delete_pdb\SYSAUX01.DBF',
+  8      'C:\APP\ORADATA\ORCL\PDBSEED\UNDOTBS01.DBF',
+  9      'C:\oracle19c\oradata\ORCL2\orclpdb\an_to_delete_pdb\UNDOTBS01.DBF',
+ 10      'C:\APP\ORADATA\ORCL\PDBSEED\TEMP',
+ 11      'C:\oracle19c\oradata\ORCL2\orclpdb\an_to_delete_pdb\TEMP'
+ 12  );
+
+Pluggable database created.
+SQL> SHOW PDBS;
+
+    CON_ID CON_NAME                       OPEN MODE  RESTRICTED
+---------- ------------------------------ ---------- ----------
+         2 PDB$SEED                       READ ONLY  NO
+         3 ORCLPDB                        MOUNTED
+         4 AN_TO_DELETE_PDB               MOUNTED
+         5 PLSQL_CLASS2024DB              MOUNTED
+SQL>
+SQL> SELECT PDB_ID, PDB_NAME, STATUS, CON_ID FROM DBA_PDBS;
+
+    PDB_ID
+----------
+PDB_NAME
+--------------------------------------------------------------------------------
+STATUS         CON_ID
+---------- ----------
+         3
+ORCLPDB
+NORMAL              3
+
+         2
+PDB$SEED
+NORMAL              2
+
+    PDB_ID
+----------
+PDB_NAME
+--------------------------------------------------------------------------------
+STATUS         CON_ID
+---------- ----------
+
+         4
+AN_TO_DELETE_PDB
+NEW                 4
+
+         5
+PLSQL_CLASS2024DB
+
+    PDB_ID
+----------
+PDB_NAME
+--------------------------------------------------------------------------------
+STATUS         CON_ID
+---------- ----------
+NEW                 5
+SQL> ALTER PLUGGABLE DATABASE an_to_delete_pdb UNPLUG INTO 'C:\App\admin\orcl\dpdump\an_to_delete_pdb.xml';
+
+Pluggable database altered.
+
+SQL>
+SQL> DROP PLUGGABLE DATABASE an_to_delete_pdb INCLUDING DATAFILES;
+
+Pluggable database dropped.
+
+SQL> DROP PLUGGABLE DATABASE an_to_delete_pdb INCLUDING DATAFILES;
+
